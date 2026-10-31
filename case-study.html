@@ -9,6 +9,40 @@
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="styles.css">
+<style>
+  .cs-heading { margin: 2.4rem 0 1rem; font-size: 1.35rem; }
+  .cs-heading small { font-weight: 400; opacity: .7; font-size: .85rem; }
+  .cs-card { padding: 1.4rem 1.6rem; border-radius: 16px; border: 1px solid rgba(127,127,127,.25); background: rgba(127,127,127,.06); margin-bottom: 1rem; }
+  .cs-card h3, .cs-card h4 { margin-top: 0; }
+  .cs-card p, .cs-a p, .cs-a li, .cs-card li { line-height: 1.7; }
+  .cs-list { display: flex; flex-direction: column; gap: .7rem; }
+  .cs-item { border: 1px solid rgba(127,127,127,.25); border-radius: 14px; background: rgba(127,127,127,.06); overflow: hidden; }
+  .cs-q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.2rem; background: none; border: 0; color: inherit; font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
+  .cs-chev { transition: transform .25s ease; flex-shrink: 0; }
+  .cs-item.open .cs-chev { transform: rotate(180deg); }
+  .cs-a { max-height: 0; overflow: hidden; padding: 0 1.2rem; transition: max-height .35s ease, padding .3s ease; }
+  .cs-item.open .cs-a { max-height: 2500px; padding: 0 1.2rem 1.2rem; }
+  .cs-key { margin: .8rem 0 0; padding: .8rem 1rem; border-left: 4px solid #8b5cf6; border-radius: 8px; background: rgba(139,92,246,.12); }
+  .cs-table-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid rgba(127,127,127,.25); }
+  .cs-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+  .cs-table th, .cs-table td { padding: .75rem 1rem; text-align: left; border-bottom: 1px solid rgba(127,127,127,.18); vertical-align: top; }
+  .cs-table th { background: rgba(127,127,127,.16); }
+  .cs-table tbody tr:last-child td { border-bottom: 0; }
+  .cs-table td:first-child { font-weight: 600; }
+  .cs-two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
+  .cs-label { font-size: .85rem; opacity: .8; margin: .9rem 0 .3rem; font-weight: 600; }
+  .cs-code { font-family: 'Fira Code', monospace; font-size: .85rem; padding: .8rem 1rem; border-radius: 10px; background: rgba(0,0,0,.3); color: #e6e6e6; overflow-x: auto; margin: 0; line-height: 1.6; }
+  .cs-verdict { font-size: 1.15rem; }
+  .cs-reasons { padding-left: 1.2rem; display: flex; flex-direction: column; gap: .6rem; }
+  .cs-pill-row { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .8rem; }
+  .cs-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin: 1.2rem 0 0; }
+  .cs-note { font-size: .9rem; opacity: .8; }
+  @media print {
+    .navbar, .bg-effects, .cs-actions, .cs-chev { display: none !important; }
+    .cs-a { max-height: none !important; padding: 0 1.2rem 1rem !important; }
+    body { background: #fff !important; color: #000 !important; }
+  }
+</style>
 </head>
 <body>
 <div class="bg-effects">
@@ -34,184 +68,219 @@
 </header>
 
 <main style="padding-top:90px;">
-<!-- ========================================== -->
-<!-- SECTION 6: CASE STUDY 1 - RISC vs CISC      -->
-<!-- ========================================== -->
 <section id="case-study" class="section case-study-section">
   <div class="container">
 
     <div class="section-header">
       <span class="section-tag"><i class="fa-solid fa-scale-balanced"></i> Case Study 1</span>
       <h2 class="section-title">RISC vs. CISC &bull; <span class="gradient-text">Choosing a Processor</span></h2>
-      <p class="section-subtitle">Comparing two processor design styles and picking the better one for a battery-powered embedded device (COA 25CST-238).</p>
+      <p class="section-subtitle">Computer Organization and Architecture (25CST-238) &bull; Shriya, Roll No. 25BAI10016 &bull; B.Tech CSE (AI), Chandigarh University</p>
+      <div class="cs-actions" style="justify-content:center;">
+        <a href="assets/case-study-report.pdf" target="_blank" class="btn btn-primary btn-sm"><i class="fa-solid fa-file-pdf"></i> Download 2-Page Report (PDF)</a>
+        <button class="btn btn-outline btn-sm" type="button" onclick="csToggleAll()"><i class="fa-solid fa-arrows-up-down"></i> <span id="csToggleText">Collapse All</span></button>
+        <button class="btn btn-outline btn-sm" type="button" onclick="window.print()"><i class="fa-solid fa-print"></i> Print</button>
+      </div>
     </div>
 
-    <!-- Scenario card -->
+    <!-- SCENARIO -->
     <div class="cs-card card-gradient-border">
       <h3><i class="fa-solid fa-lightbulb"></i> Scenario</h3>
-      <p>A technology company has built two computing systems, one on a RISC architecture and one on a CISC architecture. The team now has to choose an instruction-set design for a low-power embedded device. My job is to compare the two and justify which one fits this use case better.</p>
+      <p>A technology company develops two computing systems: one uses a <strong>RISC</strong> architecture and the other uses a <strong>CISC</strong> architecture. The team must select a suitable instruction-set design for a <strong>low-power embedded device</strong>.</p>
     </div>
 
-    <!-- Part 1: Questions -->
-    <h3 class="cs-heading">Part 1 &mdash; Case Study Questions</h3>
+    <!-- PROBLEM STATEMENT -->
+    <div class="cs-card card-gradient-border">
+      <h3><i class="fa-solid fa-circle-question"></i> Problem Statement</h3>
+      <p>Compare the two processor architectures and justify the preferred option for a given use case.</p>
+      <p>The use case here is a <strong>battery-powered embedded device</strong>, such as a sensor node, a wearable or a small controller. For a device like this, energy per instruction, chip size and cost, and predictable timing matter more than raw performance. This case study looks at both architectures with those priorities in mind.</p>
+      <div class="cs-pill-row">
+        <span class="pill"><i class="fa-solid fa-battery-half"></i> Low power</span>
+        <span class="pill"><i class="fa-solid fa-microchip"></i> Small chip area</span>
+        <span class="pill"><i class="fa-solid fa-clock"></i> Predictable timing</span>
+        <span class="pill"><i class="fa-solid fa-coins"></i> Low cost</span>
+      </div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <h3 class="cs-heading"><i class="fa-solid fa-list-check"></i> Case Study Questions</h3>
     <div class="cs-list">
 
-      <div class="cs-item">
+      <div class="cs-item open">
         <button class="cs-q" type="button" onclick="csToggle(this)">
           <span><b>Q1.</b> What is RISC? What is CISC?</span>
           <i class="fa-solid fa-chevron-down cs-chev"></i>
         </button>
         <div class="cs-a">
-          <p><strong>RISC (Reduced Instruction Set Computer)</strong> uses a small set of simple instructions, and most of them finish in about one clock cycle. Only LOAD and STORE instructions talk to memory; everything else works on registers. Examples: ARM, RISC-V, MIPS.</p>
-          <p><strong>CISC (Complex Instruction Set Computer)</strong> has a large set of instructions, and some of them do several jobs at once, for example reading from memory, calculating, and writing back in a single instruction. These can take several cycles. Examples: Intel x86, VAX, Motorola 68000.</p>
+          <p><strong>RISC (Reduced Instruction Set Computer)</strong> uses a small set of simple, uniform instructions, and most of them complete in about one clock cycle. Only <code>LOAD</code> and <code>STORE</code> instructions access memory; all other work happens between registers. RISC chips usually have many registers and a simple, often hardwired, control unit. Examples: ARM, RISC-V, MIPS.</p>
+          <p><strong>CISC (Complex Instruction Set Computer)</strong> provides a large set of instructions, and some of them perform several steps at once, such as reading from memory, calculating and writing back in a single instruction. These instructions have different lengths and take a variable number of cycles, and the control unit is often microprogrammed. Examples: Intel x86, VAX, Motorola 68000.</p>
+          <p class="cs-key"><strong>In short:</strong> RISC keeps the hardware simple and leaves the optimisation work to the compiler. CISC puts more work into the hardware so that programs can be shorter.</p>
         </div>
       </div>
 
-      <div class="cs-item">
+      <div class="cs-item open">
         <button class="cs-q" type="button" onclick="csToggle(this)">
           <span><b>Q2.</b> Why do many RISC instruction sets use fixed-length instructions?</span>
           <i class="fa-solid fa-chevron-down cs-chev"></i>
         </button>
         <div class="cs-a">
-          <p>If every instruction has the same size (32 bits in classic MIPS and ARM), the processor already knows where the next instruction starts without looking at the current one. So fetching can happen ahead of time, the decoder stays simple, and the pipeline does not stall while it works out instruction boundaries.</p>
-          <p>The price is slightly bigger programs, because even a simple operation takes the full instruction width.</p>
+          <p>When every instruction has the same size (32 bits in MIPS, RISC-V and classic ARM), the processor knows where the next instruction starts <em>without looking at the current one</em>. This gives several benefits:</p>
+          <ul>
+            <li><strong>Simple fetch:</strong> the program counter just moves forward by a fixed step (for example, +4 bytes).</li>
+            <li><strong>Simple, fast decoding:</strong> the opcode and register fields are always in the same bit positions, so the decoder only has to read them.</li>
+            <li><strong>Smooth pipelining:</strong> the pipeline can fetch the next instruction while the current one is still being decoded, because nothing needs to be worked out first.</li>
+            <li><strong>Memory alignment:</strong> instructions line up neatly with words in memory and cache lines.</li>
+          </ul>
+          <p><strong>Drawback:</strong> programs get somewhat larger, because even a simple operation takes the full instruction width. To reduce this, some designs add short 16-bit forms (ARM Thumb-2 and the RISC-V "C" extension) while keeping decoding easy.</p>
         </div>
       </div>
 
-      <div class="cs-item">
+      <div class="cs-item open">
         <button class="cs-q" type="button" onclick="csToggle(this)">
           <span><b>Q3.</b> How does instruction complexity influence instruction decoding?</span>
           <i class="fa-solid fa-chevron-down cs-chev"></i>
         </button>
         <div class="cs-a">
-          <p>The more varied and complex the instructions are, the harder they are to decode. In x86, instructions can be anywhere from 1 to 15 bytes long and may have prefixes and optional fields, so the decoder first has to find out the length before it can even locate the next instruction. That needs more logic, more transistors and more power.</p>
-          <p>RISC decoding is mostly just reading fixed bit fields (opcode, registers, immediate value), which is quick and cheap. The saved chip area can then be used for more registers or cache.</p>
+          <p>The more varied and complex the instructions are, the harder the decoder has to work.</p>
+          <p><strong>Complex (CISC) case:</strong> an x86 instruction can be anywhere from 1 to 15 bytes long. It may carry prefixes, an optional addressing byte, a displacement and an immediate value. The decoder has to read part of the instruction to find its length before it can even locate the next one. Some instructions are so complex that they are handled by microcode. All this needs more logic, more transistors and more power, and it makes it hard to decode several instructions in parallel.</p>
+          <p><strong>Simple (RISC) case:</strong> decoding is mostly reading fixed bit fields: opcode, source register, destination register, immediate. This is fast, cheap and low in power. The chip area saved can be used for more registers or cache.</p>
+          <p class="cs-key"><strong>Note:</strong> modern x86 processors hide this cost by translating complex instructions into simple internal micro-operations. That works well for performance, but the translation hardware itself uses area and energy, which is a disadvantage for battery-powered devices.</p>
         </div>
       </div>
 
-      <div class="cs-item">
+      <div class="cs-item open">
         <button class="cs-q" type="button" onclick="csToggle(this)">
           <span><b>Q4.</b> Compare the typical addressing-mode approaches in RISC and CISC.</span>
           <i class="fa-solid fa-chevron-down cs-chev"></i>
         </button>
         <div class="cs-a">
-          <p><strong>RISC</strong> keeps addressing modes few: register, immediate, and base-plus-offset. Only load/store instructions use memory addressing.</p>
-          <p><strong>CISC</strong> offers many modes: direct, indirect, indexed, base + index &times; scale + displacement, even memory-to-memory, and most instructions are allowed to use them.</p>
-          <p>So CISC is more flexible for the programmer or compiler, while RISC is easier to build and pipeline.</p>
+          <p><strong>RISC approach:</strong> only a few simple modes are provided, typically <em>register</em>, <em>immediate</em> and <em>base register + offset</em>. Only load/store instructions touch memory, so arithmetic instructions work purely on registers. This keeps the hardware simple and every instruction predictable.</p>
+          <p><strong>CISC approach:</strong> many modes are provided, such as direct, indirect, indexed, <em>base + index &times; scale + displacement</em>, and in some machines even memory-to-memory operations. Most instructions are allowed to use these modes, so one instruction can fetch operands from memory, compute and store the result.</p>
+          <div class="cs-table-wrap" style="margin-top:.8rem;">
+            <table class="cs-table">
+              <thead><tr><th>Aspect</th><th>RISC</th><th>CISC</th></tr></thead>
+              <tbody>
+                <tr><td>Number of modes</td><td>Few (about 3)</td><td>Many (often 10 or more)</td></tr>
+                <tr><td>Where memory modes are used</td><td>Only in LOAD / STORE</td><td>In most instructions</td></tr>
+                <tr><td>Effect on hardware</td><td>Simple and easy to pipeline</td><td>Complex address calculation</td></tr>
+                <tr><td>Effect on programs</td><td>More instructions</td><td>Shorter, denser code</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:.8rem;"><strong>Remark:</strong> some RISC processors such as ARM add a few extras like auto-increment, but the number of modes is still far lower than in x86.</p>
         </div>
       </div>
 
-      <div class="cs-item">
+      <div class="cs-item open">
         <button class="cs-q" type="button" onclick="csToggle(this)">
           <span><b>Q5.</b> Can a CISC processor outperform a RISC processor? Explain with one reason.</span>
           <i class="fa-solid fa-chevron-down cs-chev"></i>
         </button>
         <div class="cs-a">
-          <p><strong>Yes.</strong> The main reason is <em>code density</em>. One CISC instruction can replace several RISC instructions, so the program is smaller and needs less instruction-fetch bandwidth. When memory is slow or the cache is small, this can make CISC faster.</p>
-          <p>Also, modern x86 chips break complex instructions into RISC-like micro-operations internally, so they get the benefits of both styles.</p>
+          <p><strong>Yes, it can, and the reason is code density.</strong></p>
+          <p>One CISC instruction can do the work of several RISC instructions, so the same program takes up fewer bytes. A smaller program means fewer instruction fetches from memory and better use of a small instruction cache. When memory is slow or the cache is limited, fetching fewer bytes can make the CISC machine finish sooner, even if each instruction is individually more complex.</p>
+          <p class="cs-key"><strong>Extra point:</strong> modern x86 chips also convert complex instructions into RISC-like micro-operations inside, so they get the benefits of both styles. This is why performance depends on the whole design (pipeline, cache, clock speed), not only on whether the instruction set is RISC or CISC.</p>
         </div>
       </div>
 
     </div>
 
-    <!-- Part 2: Table -->
-    <h3 class="cs-heading">Part 2 &mdash; Comparison Table</h3>
+    <!-- ASSIGNMENT -->
+    <h3 class="cs-heading"><i class="fa-solid fa-file-lines"></i> Assignment <small>&mdash; Two-page report</small></h3>
+    <p class="cs-note">The assignment asks for (a) a comparison table with at least five parameters, (b) two example instructions or instruction sequences, and (c) a reasoned processor recommendation for a battery-powered embedded device. All three are below, and the full two-page report is available as a PDF at the top of this page.</p>
+
+    <!-- (a) -->
+    <h3 class="cs-heading">(a) Comparison Table <small>&mdash; 12 parameters</small></h3>
     <div class="cs-table-wrap">
       <table class="cs-table">
-        <thead>
-          <tr><th>Parameter</th><th>RISC</th><th>CISC</th></tr>
-        </thead>
+        <thead><tr><th>Parameter</th><th>RISC</th><th>CISC</th></tr></thead>
         <tbody>
           <tr><td>Instruction set size</td><td>Small and simple</td><td>Large, includes complex instructions</td></tr>
           <tr><td>Instruction length</td><td>Mostly fixed (e.g. 32-bit)</td><td>Variable (1&ndash;15 bytes in x86)</td></tr>
           <tr><td>Cycles per instruction</td><td>Usually 1 (pipeline-friendly)</td><td>Varies, often several</td></tr>
           <tr><td>Memory access</td><td>Only through LOAD / STORE</td><td>Most instructions can use memory operands</td></tr>
-          <tr><td>Addressing modes</td><td>Few (register, immediate, base+offset)</td><td>Many and complex</td></tr>
-          <tr><td>Registers</td><td>Large register file</td><td>Fewer general-purpose registers</td></tr>
-          <tr><td>Decoder / control unit</td><td>Simple, often hardwired</td><td>Complex, often uses microcode</td></tr>
-          <tr><td>Code size</td><td>Larger</td><td>Smaller (denser)</td></tr>
+          <tr><td>Addressing modes</td><td>Few: register, immediate, base + offset</td><td>Many and complex</td></tr>
+          <tr><td>Register file</td><td>Large (e.g. 32 general-purpose registers)</td><td>Smaller (e.g. 8&ndash;16 general-purpose registers)</td></tr>
+          <tr><td>Decoder / control unit</td><td>Simple, usually hardwired</td><td>Complex, often microprogrammed</td></tr>
+          <tr><td>Code size</td><td>Larger</td><td>Smaller (higher code density)</td></tr>
+          <tr><td>Pipelining</td><td>Easy and efficient</td><td>Harder because instructions are uneven</td></tr>
           <tr><td>Power and chip area</td><td>Lower</td><td>Higher</td></tr>
-          <tr><td>Examples</td><td>ARM, RISC-V, MIPS</td><td>x86, VAX, Motorola 68000</td></tr>
+          <tr><td>Compiler role</td><td>Compiler does more optimisation work</td><td>Hardware does more per instruction</td></tr>
+          <tr><td>Typical examples</td><td>ARM, RISC-V, MIPS</td><td>Intel x86, VAX, Motorola 68000</td></tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Part 3: Examples -->
-    <h3 class="cs-heading">Part 3 &mdash; Example Instruction Sequences</h3>
+    <!-- (b) -->
+    <h3 class="cs-heading">(b) Example Instruction Sequences</h3>
     <div class="cs-two-col">
       <div class="cs-card">
         <h4>Example 1: <code>counter = counter + 1</code></h4>
-        <p class="cs-label">CISC (x86) &ndash; 1 instruction</p>
-        <pre class="cs-code">ADD DWORD PTR [counter], 1</pre>
-        <p class="cs-label">RISC (ARM) &ndash; 3 instructions</p>
-        <pre class="cs-code">LDR  R1, [R0]      ; load counter
-ADD  R1, R1, #1    ; add 1
-STR  R1, [R0]      ; store result</pre>
-        <p>CISC reads memory, adds and writes back in one go. RISC splits it into three simple steps that are easy to decode and pipeline.</p>
+        <p>A variable stored in memory is incremented by one.</p>
+        <p class="cs-label">CISC (x86) &mdash; 1 instruction</p>
+        <pre class="cs-code">ADD  DWORD PTR [counter], 1   ; read memory, add 1, write back</pre>
+        <p class="cs-label">RISC (ARM) &mdash; 3 instructions</p>
+        <pre class="cs-code">LDR  R1, [R0]      ; load counter (R0 = its address)
+ADD  R1, R1, #1    ; add 1 in a register
+STR  R1, [R0]      ; store the result back</pre>
+        <p><strong>Observation:</strong> the CISC version is shorter, but it hides three steps inside one instruction with a variable cycle count. The RISC version needs more instructions, but each one has a fixed size, takes about one cycle and moves smoothly through the pipeline.</p>
       </div>
       <div class="cs-card">
-        <h4>Example 2: Copying a block of bytes</h4>
-        <p class="cs-label">CISC (x86) &ndash; 1 instruction</p>
-        <pre class="cs-code">REP MOVSB</pre>
-        <p class="cs-label">RISC (ARM) &ndash; a short loop</p>
-        <pre class="cs-code">loop: LDRB R2, [R0], #1   ; load byte, move pointer
-      STRB R2, [R1], #1   ; store byte, move pointer
-      SUBS R3, R3, #1     ; decrement count
-      BNE  loop           ; repeat until zero</pre>
-        <p>CISC gives shorter code; RISC gives simpler and more predictable hardware.</p>
+        <h4>Example 2: Copying a block of N bytes</h4>
+        <p>Data is copied from a source area to a destination area.</p>
+        <p class="cs-label">CISC (x86) &mdash; 1 instruction</p>
+        <pre class="cs-code">; ESI = source, EDI = destination, ECX = N
+REP MOVSB    ; repeat: copy a byte, advance pointers, ECX = ECX - 1</pre>
+        <p class="cs-label">RISC (ARM) &mdash; a short loop of 4 instructions</p>
+        <pre class="cs-code">; R0 = source, R1 = destination, R3 = N
+loop: LDRB R2, [R0], #1   ; load a byte, then move source pointer
+      STRB R2, [R1], #1   ; store the byte, then move destination pointer
+      SUBS R3, R3, #1     ; decrement count and set flags
+      BNE  loop           ; repeat until count is zero</pre>
+        <p><strong>Observation:</strong> CISC wins on code size (one instruction against four). RISC gives simple, predictable steps that are easy to pipeline and to time exactly.</p>
       </div>
     </div>
 
-    <!-- Part 4: Recommendation -->
-    <h3 class="cs-heading">Part 4 &mdash; Recommendation for a Battery-Powered Embedded Device</h3>
+    <!-- (c) -->
+    <h3 class="cs-heading">(c) Processor Recommendation <small>&mdash; battery-powered embedded device</small></h3>
     <div class="cs-card card-gradient-border">
-      <p class="cs-verdict"><i class="fa-solid fa-circle-check"></i> I recommend a <strong>RISC architecture</strong>, such as ARM Cortex-M or RISC-V.</p>
+      <p class="cs-verdict"><i class="fa-solid fa-circle-check"></i> <strong>Recommended: a RISC processor</strong>, such as an ARM Cortex-M or a RISC-V microcontroller.</p>
       <ol class="cs-reasons">
-        <li><strong>Lower power use.</strong> A simple decoder and fixed-length instructions mean fewer transistors switching, so less energy per instruction. On a battery, this matters most.</li>
-        <li><strong>Smaller, cheaper chip.</strong> Less control logic means a smaller die, lower cost and less heat, so no fan or heat sink is needed.</li>
-        <li><strong>Predictable timing.</strong> Sensors and controllers often have real-time deadlines. Mostly single-cycle instructions make execution time easy to estimate.</li>
-        <li><strong>Efficient pipelining.</strong> Uniform instructions keep the pipeline full, so the work gets done at a low clock speed, which saves more power.</li>
-        <li><strong>Strong ecosystem.</strong> ARM and RISC-V have wide toolchain, library and microcontroller support for low-power designs.</li>
+        <li><strong>Lower power consumption.</strong> A simple decoder and fixed-length instructions mean fewer transistors switching for every instruction, so less energy is drawn from the battery. This is the most important factor for a battery-powered device.</li>
+        <li><strong>Smaller, cheaper chip.</strong> Less control logic gives a smaller die, lower manufacturing cost and less heat, so no fan or heat sink is needed in a compact device.</li>
+        <li><strong>Predictable timing.</strong> Embedded tasks such as sensor reading or motor control often have real-time deadlines. Mostly single-cycle instructions make execution time easy to calculate.</li>
+        <li><strong>Efficient pipelining at a low clock speed.</strong> Uniform instructions keep the pipeline busy, so useful work gets done without a high clock rate. A lower clock saves further power.</li>
+        <li><strong>Mature ecosystem.</strong> ARM and RISC-V have wide compiler, library and microcontroller support, including deep sleep modes made for battery life.</li>
       </ol>
-      <p><strong>Trade-off:</strong> RISC programs are larger. But flash memory is cheap, and compressed instruction sets (ARM Thumb, RISC-V "C" extension) shrink the gap a lot. CISC's strengths, like raw speed on complex workloads, matter less here than energy efficiency.</p>
-      <p><strong>Conclusion:</strong> CISC tries to do more per instruction, while RISC tries to do each instruction cheaply and quickly. For a low-power embedded device, the simplicity, efficiency and predictability of RISC make it the better choice.</p>
+      <p><strong>Trade-off and how to reduce it:</strong> RISC programs are larger and need more instruction fetches. Flash memory is cheap, and compressed instruction sets (ARM Thumb-2 and the RISC-V "C" extension) recover most of the gap. CISC advantages such as raw speed on complex workloads matter little for a device whose main goal is a long battery life.</p>
+
+      <div class="cs-table-wrap" style="margin:1rem 0;">
+        <table class="cs-table">
+          <thead><tr><th>Requirement for this device</th><th>Better fit</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Long battery life</td><td>RISC</td><td>Simple decoder, less switching</td></tr>
+            <tr><td>Low cost and small size</td><td>RISC</td><td>Less control logic on the die</td></tr>
+            <tr><td>Real-time behaviour</td><td>RISC</td><td>Mostly fixed one-cycle instructions</td></tr>
+            <tr><td>Small program memory</td><td>CISC (RISC with Thumb-2 / "C" is close)</td><td>Higher code density</td></tr>
+            <tr><td>Heavy desktop or server workloads</td><td>CISC</td><td>Large software base, high performance</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Conclusion:</strong> CISC tries to do more per instruction, while RISC tries to do each instruction cheaply and quickly. For a low-power, battery-powered embedded device, the simplicity, efficiency and predictability of RISC make it the better choice.</p>
     </div>
 
   </div>
 </section>
-
-<!-- Case Study styles (self-contained, works in dark and light theme) -->
-<style>
-  .case-study-section .cs-heading { margin: 2.2rem 0 1rem; font-size: 1.3rem; }
-  .cs-card { padding: 1.4rem 1.6rem; border-radius: 16px; border: 1px solid rgba(127,127,127,.25); background: rgba(127,127,127,.06); margin-bottom: 1rem; }
-  .cs-card h3, .cs-card h4 { margin-top: 0; }
-  .cs-list { display: flex; flex-direction: column; gap: .7rem; }
-  .cs-item { border: 1px solid rgba(127,127,127,.25); border-radius: 14px; background: rgba(127,127,127,.06); overflow: hidden; }
-  .cs-q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.2rem; background: none; border: 0; color: inherit; font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
-  .cs-chev { transition: transform .25s ease; flex-shrink: 0; }
-  .cs-item.open .cs-chev { transform: rotate(180deg); }
-  .cs-a { max-height: 0; overflow: hidden; padding: 0 1.2rem; transition: max-height .3s ease, padding .3s ease; }
-  .cs-item.open .cs-a { max-height: 700px; padding: 0 1.2rem 1.1rem; }
-  .cs-table-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid rgba(127,127,127,.25); }
-  .cs-table { width: 100%; border-collapse: collapse; min-width: 560px; }
-  .cs-table th, .cs-table td { padding: .75rem 1rem; text-align: left; border-bottom: 1px solid rgba(127,127,127,.18); }
-  .cs-table th { background: rgba(127,127,127,.14); }
-  .cs-table tbody tr:last-child td { border-bottom: 0; }
-  .cs-table td:first-child { font-weight: 600; }
-  .cs-two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
-  .cs-label { font-size: .85rem; opacity: .75; margin: .8rem 0 .3rem; }
-  .cs-code { font-family: 'Fira Code', monospace; font-size: .85rem; padding: .8rem 1rem; border-radius: 10px; background: rgba(0,0,0,.28); color: #e6e6e6; overflow-x: auto; margin: 0; }
-  .cs-verdict { font-size: 1.1rem; }
-  .cs-reasons { padding-left: 1.2rem; display: flex; flex-direction: column; gap: .5rem; }
-</style>
+</main>
 
 <script>
-  // Accordion toggle for the Case Study questions
-  function csToggle(btn) {
-    btn.closest('.cs-item').classList.toggle('open');
+  function csToggle(btn) { btn.closest('.cs-item').classList.toggle('open'); }
+  function csToggleAll() {
+    var items = document.querySelectorAll('.cs-item');
+    var anyOpen = Array.prototype.some.call(items, function (i) { return i.classList.contains('open'); });
+    items.forEach(function (i) { i.classList.toggle('open', !anyOpen); });
+    document.getElementById('csToggleText').textContent = anyOpen ? 'Expand All' : 'Collapse All';
   }
 </script>
-
-</main>
 </body>
 </html>
